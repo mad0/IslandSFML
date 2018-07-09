@@ -13,7 +13,7 @@ UI::~UI() {
 }
 
 
-void UI::createMonitor(int _posX, int _posY, int _sizeX, int _sizeY, sf::Color _fColor, sf::Color _oColor, int _thickness) {
+void UI::createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf::Color _fColor, sf::Color _oColor, float _thickness) {
 	monitors.emplace_back(std::make_unique<sf::RectangleShape>(sf::Vector2f(_sizeX, _sizeY)));
 	int index = monitors.size();
 	monitors[index - 1]->setPosition(_posX, _posY);
