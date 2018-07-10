@@ -3,8 +3,8 @@
 
 
 UI::UI(sf::RenderWindow *_window) : window(_window){
-	createMonitor(10, 10, 200, 200, sf::Color::Blue, sf::Color::Red, 1);
-	createMonitor(10, 220, 400, 200, sf::Color::Yellow, sf::Color::Red, 2);
+	createMonitor(5, 5, 200, 200, sf::Color::Black, sf::Color::Red, 2);
+	createMonitor(5, 210, 400, 200, sf::Color::Yellow, sf::Color::Red, 2);
 	std::cout << "ODPALAM UI...\n";
 }
 

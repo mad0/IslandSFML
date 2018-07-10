@@ -7,6 +7,10 @@ class Engine {
 private:
 	sf::RenderWindow window;
 	std::unique_ptr<UI> ui;
+	sf::String inputText;
+	sf::String dupa;
+	sf::Font fonty;
+	sf::Text text;
 public:
 	Engine();
 	~Engine();
