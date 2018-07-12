@@ -19,14 +19,15 @@ void Engine::mainLoop() {
 				if (event.text.unicode == 13) {
 					std::cout << static_cast<char>(event.text.unicode) << "\n";
 					//inputText.erase(inputText.getSize() - 1, 1);
-					ui->addText(2, inputText);
-					inputText = "";
-					ui->setText(0, inputText);
+					//ui->addText(2, inputText);
+					//inputText = "";
+					//ui->setText(0, inputText);
+					ui->sendCommand(UI::Command::attack);
 				}
 				else {
 					inputText += static_cast<char>(event.text.unicode);
 					//std::cout << static_cast<char>(event.text.unicode) << "\n";
-					ui->setText(0, inputText+"_");
+					//ui->setText(0, inputText+"_");
 				}
 			}
 		}
