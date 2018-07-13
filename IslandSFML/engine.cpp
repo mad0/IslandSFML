@@ -16,36 +16,34 @@ void Engine::mainLoop() {
 			if (event.type == sf::Event::Closed)
 				window.close();
 			if (event.type == sf::Event::TextEntered) {
-				switch (event.text.unicode) {
-					case 'move': {
-						std::cout << "ENTER";
-						ui->sendCommand(UI::Command::attack);
-						break; }
-					case 8: {
-						std::cout << "BACKSPACE";
-						break; }
-					default:
-						std::cout << static_cast<char>(event.text.unicode);
-						break;
-				}
-				//if (event.text.unicode == 13) {
-				//	std::cout << static_cast<char>(event.text.unicode) << "\n";
+				//switch (event.text.unicode) {
+				//	case 'move': {
+				//		std::cout << "ENTER";
+				//		ui->sendCommand(UI::Command::attack);
+				//		break; }
+				//	case 8: {
+				//		std::cout << "BACKSPACE";
+				//		break; }
+				//	default:
+				//		std::cout << static_cast<char>(event.text.unicode);
+				///	break;
+				//}
+				if (event.text.unicode == 13) {
 					//inputText.erase(inputText.getSize() - 1, 1);
-					//ui->addText(2, inputText);
-					//inputText = "";
-					//ui->setText(0, inputText);
-				//	ui->sendCommand(UI::Command::attack);
-				//}
-				//else {
-				//	inputText += static_cast<char>(event.text.unicode);
+					ui->sendCommand(inputText, UI::Monitors::OutputText);
+					inputText.clear();
+					//ui->console(UI::Monitors::Console, inputText);
+				}
+				else {
+					inputText += static_cast<char>(event.text.unicode);
 					//std::cout << static_cast<char>(event.text.unicode) << "\n";
-					//ui->setText(0, inputText+"_");
-				//}
+					ui->console(UI::Monitors::Console, inputText);
+					}
+				}
 			}
+			update();
+			draw();
 		}
-		update();
-		draw();
-	}
 }
 
 void Engine::input() {

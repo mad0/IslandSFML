@@ -7,7 +7,7 @@ class Engine {
 private:
 	sf::RenderWindow window;
 	std::unique_ptr<UI> ui;
-	sf::String inputText;
+	std::string inputText;
 
 public:
 	Engine();
