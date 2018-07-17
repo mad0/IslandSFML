@@ -6,6 +6,5 @@ int main() {
 	Engine game;
 	game.mainLoop();
 
-
 return 0;
 }
