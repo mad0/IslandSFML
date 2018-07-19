@@ -29,7 +29,7 @@ public:
 private:
 	sf::Text textToConsole;
 	sf::Font font;
-	void createStars();
+	float calculateStars(int _starsNumber);
 	std::vector<std::shared_ptr<sf::RectangleShape>> monitors;
 	std::vector<std::unique_ptr<sf::Text>> consoleOutput;
 	std::map<std::string, std::string> feedbacks;

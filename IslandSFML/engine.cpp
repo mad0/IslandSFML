@@ -4,6 +4,7 @@
 Engine::Engine() : ui(new UI){
 	window.create(sf::VideoMode(1280, 720), "Island", sf::Style::Default);
 	//window.create(sf::VideoMode(1920, 1080), "Island", sf::Style::Fullscreen);
+	window.setFramerateLimit(30);
 }
 
 Engine::~Engine() {

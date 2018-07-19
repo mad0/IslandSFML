@@ -2,6 +2,9 @@
 #include <iostream>
 #include <random>
 
+static std::random_device randDevice;
+static std::mt19937 mt(randDevice());
+
 UI::UI() {
 
 	font.loadFromFile("fonts/CGA.ttf");
@@ -46,28 +49,33 @@ void UI::createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf:
 }
 
 void UI::drawStars() {
-	std::random_device randDevice;
-	std::mt19937 mt(randDevice());
-	
-	std::uniform_int_distribution<int> intX(20, 885);
-	std::uniform_int_distribution<int> intY(20, 480);
-	for (int x = 0; x < 200; x++) {
-		if (x < 100)
-			std::uniform_real_distribution<double> dist(0.100, 0.150);
-		else 
-			std::uniform_real_distribution<double> dist(0.170, 0.200);
+	static std::uniform_int_distribution<int> intX(20, 885);
+	static std::uniform_int_distribution<int> intY(20, 480);
+	static std::uniform_int_distribution<int> color(100, 255);
+	for (int x = 0; x < 120; x++) {
+		std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(calculateStars(x), 4);
+		tempStar->setRotation(90.f);
+		tempStar->setScale(7.0f, 7.0f);
+		int tempColor = color(mt);
+		tempStar->setFillColor(sf::Color(tempColor, tempColor, tempColor, 255));
+		//std::cout << calculateStars(x) <<"\n";
+		tempStar->setPosition(intX(mt), intY(mt));
+		stars.emplace_back(std::move(tempStar));
 	}
-	
 	std::cout << stars.size();
 }
 
-void UI::createStars() {
-	std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(dist(mt), 4);
-	tempStar->setRotation(90.f);
-	tempStar->setScale(7.0f, 7.0f);
-	tempStar->setFillColor(sf::Color::White);
-	tempStar->setPosition(intX(mt), intY(mt));
-	stars.emplace_back(std::move(tempStar));
+float UI::calculateStars(int _starsNumber) {
+	if (_starsNumber <= 80) {
+		static std::uniform_real_distribution<double> dist(0.110, 0.130);
+		std::cout << 1 << "\n";
+		return dist(mt);
+	}
+	else {
+		static std::uniform_real_distribution<double> dist(0.180, 0.200);
+		std::cout << 2 << "\n";
+		return dist(mt);
+	}	
 }
  
 void UI::drawUI(sf::RenderWindow &_window) {
