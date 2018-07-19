@@ -1,13 +1,12 @@
 #include "UI.h"
 #include <iostream>
-
+#include <random>
 
 UI::UI() {
+
 	font.loadFromFile("fonts/CGA.ttf");
 	// 1:map:
-	createMonitor(10, 10, 500, 480, sf::Color(201, 201, 201, 255), sf::Color(51, 51, 0, 255), 1);
-	// 2:stats
-	createMonitor(520, 10, 375, 480, sf::Color(229, 229, 229, 255), sf::Color(51, 51, 0, 255), 1);
+	createMonitor(10, 10, 885, 480, sf::Color::Black, sf::Color(229, 229, 229, 255), 1);
 	// 3:loot
 	createMonitor(905, 10, 365, 480, sf::Color(229, 229, 229, 255), sf::Color(51, 51, 0, 255), 1);
 	// 4:game messages
@@ -29,6 +28,7 @@ UI::UI() {
 		{ "attack",  "Attack enemy!" },
 		{ "loot",  "Loot body" }
 	};
+	drawStars();
 	std::cout << "ODPALAM UI...\n";
 }
 
@@ -44,6 +44,31 @@ void UI::createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf:
 	monitors[mIndex]->setOutlineColor(_oColor);
 	monitors[mIndex]->setOutlineThickness(_thickness);
 }
+
+void UI::drawStars() {
+	std::random_device randDevice;
+	std::mt19937 mt(randDevice());
+	
+	std::uniform_int_distribution<int> intX(20, 885);
+	std::uniform_int_distribution<int> intY(20, 480);
+	for (int x = 0; x < 200; x++) {
+		if (x < 100)
+			std::uniform_real_distribution<double> dist(0.100, 0.150);
+		else 
+			std::uniform_real_distribution<double> dist(0.170, 0.200);
+	}
+	
+	std::cout << stars.size();
+}
+
+void UI::createStars() {
+	std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(dist(mt), 4);
+	tempStar->setRotation(90.f);
+	tempStar->setScale(7.0f, 7.0f);
+	tempStar->setFillColor(sf::Color::White);
+	tempStar->setPosition(intX(mt), intY(mt));
+	stars.emplace_back(std::move(tempStar));
+}
  
 void UI::drawUI(sf::RenderWindow &_window) {
 	for (auto& m : monitors)
@@ -52,6 +77,8 @@ void UI::drawUI(sf::RenderWindow &_window) {
 	for (auto& t : consoleOutput) {
 			_window.draw(*t);
 	}
+	for (auto& s : stars)
+		_window.draw(*s);
 }
 
 sf::Vector2f UI::getMonitorPosition(UI::Monitors _monitor, float _nextLine) {
@@ -67,6 +94,7 @@ void UI::sendCommand(std::string _command) {
 		std::unique_ptr<sf::Text> tempText = std::make_unique<sf::Text>(it->second, font, 17);
 		int textSize = consoleOutput.size();
 		tempText->setPosition(getMonitorPosition(UI::Monitors::ConsoleOutput, textSize));
+		tempText->setFillColor(sf::Color::Blue);
 		consoleOutput.emplace_back(std::move(tempText));
 	}
 }
