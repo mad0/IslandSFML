@@ -55,24 +55,32 @@ void UI::drawStars() {
 	for (int x = 0; x < 120; x++) {
 		std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(calculateStars(x), 4);
 		tempStar->setRotation(90.f);
-		tempStar->setScale(7.0f, 7.0f);
-		int tempColor = color(mt);
-		tempStar->setFillColor(sf::Color(tempColor, tempColor, tempColor, 255));
-		//std::cout << calculateStars(x) <<"\n";
+		tempStar->setFillColor(sf::Color(color(mt), color(mt), color(mt), 255));
 		tempStar->setPosition(intX(mt), intY(mt));
 		stars.emplace_back(std::move(tempStar));
 	}
 	std::cout << stars.size();
 }
 
+void UI::fallStar() {
+	static std::uniform_int_distribution<int> intY(20, 885);
+	for (int x = 0; x < stars.size(); x++) {
+		if (stars[x]->getPosition().y >= 480)
+			(stars[x]->setPosition(intY(mt), stars[x]->getPosition().y - stars[x]->getPosition().y+10));
+		else
+			stars[x]->move(0, 0.5);
+	}
+	std::cout << stars.size() << "\n";
+}
+
 float UI::calculateStars(int _starsNumber) {
 	if (_starsNumber <= 80) {
-		static std::uniform_real_distribution<double> dist(0.110, 0.130);
+		static std::uniform_real_distribution<double> dist(0.5, 1.5);
 		std::cout << 1 << "\n";
 		return dist(mt);
 	}
 	else {
-		static std::uniform_real_distribution<double> dist(0.180, 0.200);
+		static std::uniform_real_distribution<double> dist(1.8, 2.0);
 		std::cout << 2 << "\n";
 		return dist(mt);
 	}	
@@ -82,9 +90,9 @@ void UI::drawUI(sf::RenderWindow &_window) {
 	for (auto& m : monitors)
 		_window.draw(*m);
 	_window.draw(textToConsole);
-	for (auto& t : consoleOutput) {
+	for (auto& t : consoleOutput)
 			_window.draw(*t);
-	}
+
 	for (auto& s : stars)
 		_window.draw(*s);
 }

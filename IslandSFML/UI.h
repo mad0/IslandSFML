@@ -26,6 +26,7 @@ public:
 	void writeToConsole(UI::Messages _messageStatus, const std::string& _text);
 	void createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf::Color _fColor, sf::Color _oColor, float _thicknes);
 	void drawStars();
+	void fallStar();
 private:
 	sf::Text textToConsole;
 	sf::Font font;
