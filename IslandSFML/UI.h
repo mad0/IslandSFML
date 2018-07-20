@@ -25,15 +25,17 @@ public:
 	void sendCommand(std::string _command);
 	void writeToConsole(UI::Messages _messageStatus, const std::string& _text);
 	void createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf::Color _fColor, sf::Color _oColor, float _thicknes);
-	void drawStars();
+	void drawStars(int _starsNumber);
 	void fallStar();
 private:
 	sf::Text textToConsole;
 	sf::Font font;
-	float calculateStars(int _starsNumber);
+	float calculateStars(int _starNumber, int _starsNumber);
 	std::vector<std::shared_ptr<sf::RectangleShape>> monitors;
 	std::vector<std::unique_ptr<sf::Text>> consoleOutput;
 	std::map<std::string, std::string> feedbacks;
 	std::vector<std::unique_ptr<sf::CircleShape>> stars;
+	std::vector<float> fallSpeed;
+	float getFallSpeed();
 };
 

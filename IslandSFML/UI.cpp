@@ -31,7 +31,7 @@ UI::UI() {
 		{ "attack",  "Attack enemy!" },
 		{ "loot",  "Loot body" }
 	};
-	drawStars();
+	drawStars(200);
 	std::cout << "ODPALAM UI...\n";
 }
 
@@ -48,12 +48,12 @@ void UI::createMonitor(float _posX, float _posY, float _sizeX, float _sizeY, sf:
 	monitors[mIndex]->setOutlineThickness(_thickness);
 }
 
-void UI::drawStars() {
+void UI::drawStars(int _starsNumber) {
 	static std::uniform_int_distribution<int> intX(20, 885);
 	static std::uniform_int_distribution<int> intY(20, 480);
 	static std::uniform_int_distribution<int> color(100, 255);
-	for (int x = 0; x < 120; x++) {
-		std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(calculateStars(x), 4);
+	for (int x = 0; x < _starsNumber; x++) {
+		std::unique_ptr<sf::CircleShape> tempStar = std::make_unique<sf::CircleShape>(calculateStars(x, _starsNumber), 4);
 		tempStar->setRotation(90.f);
 		tempStar->setFillColor(sf::Color(color(mt), color(mt), color(mt), 255));
 		tempStar->setPosition(intX(mt), intY(mt));
@@ -64,26 +64,40 @@ void UI::drawStars() {
 
 void UI::fallStar() {
 	static std::uniform_int_distribution<int> intY(20, 885);
-	for (int x = 0; x < stars.size(); x++) {
-		if (stars[x]->getPosition().y >= 480)
-			(stars[x]->setPosition(intY(mt), stars[x]->getPosition().y - stars[x]->getPosition().y+10));
-		else
-			stars[x]->move(0, 0.5);
+	for (int x = 0; x < stars.size();x++) {
+		if (stars[x]->getPosition().y >= 480) {
+			(stars[x]->setPosition(intY(mt), stars[x]->getPosition().y - stars[x]->getPosition().y + 10));
+			std::cout <<"size1 "<< fallSpeed.size() << "\n";
+			std::cout <<"x1 "<< x << "\n";
+			fallSpeed[x-1] = getFallSpeed();
+			stars[x]->move(0, fallSpeed[x]);
+		}
+		else {
+			fallSpeed.push_back(getFallSpeed());
+			std::cout <<"size2 "<< fallSpeed.size() << "\n";
+			std::cout <<"x2 "<< x << "\n";
+			stars[x]->move(0, fallSpeed[x]);
+		}
 	}
 	std::cout << stars.size() << "\n";
 }
 
-float UI::calculateStars(int _starsNumber) {
-	if (_starsNumber <= 80) {
-		static std::uniform_real_distribution<double> dist(0.5, 1.5);
+float UI::calculateStars(int _starNumber, int _starsNumber) {
+	if (_starNumber <= _starsNumber) {
+		static std::uniform_real_distribution<float> dist(0.5, 1.5);
 		std::cout << 1 << "\n";
 		return dist(mt);
 	}
 	else {
-		static std::uniform_real_distribution<double> dist(1.8, 2.0);
+		static std::uniform_real_distribution<float> dist(1.8, 2.0);
 		std::cout << 2 << "\n";
 		return dist(mt);
 	}	
+}
+
+float UI::getFallSpeed() {
+		static std::uniform_real_distribution<double> fall(0.4, 5.5);
+	return fall(mt);
 }
  
 void UI::drawUI(sf::RenderWindow &_window) {
