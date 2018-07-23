@@ -46,7 +46,6 @@ void Engine::input() {
 }
 
 void Engine::update() {
-	ui->fallStar();
 	//std::string w = inputText;
 	//std::cout << w + "\n";
 }
